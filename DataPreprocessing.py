@@ -1,5 +1,6 @@
 import pandas as pd
 import spacy
+import joblib
 
 # Load the data
 data = pd.read_csv('公然侮辱罪_地方法院判決.csv')
@@ -39,6 +40,8 @@ def extract_insult_features(text):
     doc = nlp(text)
     return ' '.join([token.text for token in doc])
 
+
+
 df['侮辱字詞特徵'] = df['侮辱字詞'].apply(extract_insult_features)
 df['侮辱字詞長度'] = df['侮辱字詞'].apply(len)
 
@@ -46,3 +49,5 @@ X = df.drop(columns=['判決字號', '處罰方式', '侮辱字詞', '罰金'])
 y = df['罰金']
 
 X['侮辱字詞特徵'] = df['侮辱字詞特徵']
+
+joblib.dump(extract_insult_features, 'insult_fine_prediction_extract_insult_features.pkl')
