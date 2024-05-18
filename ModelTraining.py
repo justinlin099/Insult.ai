@@ -91,10 +91,12 @@ while True:
 
     # Initialize an empty DataFrame with all required columns
     X_full_input = pd.DataFrame(columns=columns)
-    X_full_input = pd.concat([X_full_input, X_input], axis=0, ignore_index=True)
     
-    # Fill missing values with 0
-    X_full_input = X_full_input.fillna(0)
+    # Exclude empty or all-NA entries before concatenation
+    X_full_input = pd.concat([X_full_input, X_input], axis=0, ignore_index=True, join='outer')
+
+    # Fill missing values with 0 and infer object types
+    X_full_input = X_full_input.fillna(0).infer_objects()
 
     # Ensure all column names are strings
     X_full_input.columns = X_full_input.columns.astype(str)
