@@ -156,7 +156,7 @@ repeatOffenderWhileOnParoleFrame = ttk.Frame(root)
 repeatOffenderWhileOnParoleFrame.pack(fill=ttk.X, padx=20, pady=20, side='top')
 
 # RepeatOffenderWhileOnParoleLabel
-repeatOffenderWhileOnParoleLabel = ttk.Label(repeatOffenderWhileOnParoleFrame, text='行為人是否於緩刑中或假釋中再犯(否/是):\t\t\t', font=('Helvetica', 12),anchor=ttk.W)
+repeatOffenderWhileOnParoleLabel = ttk.Label(repeatOffenderWhileOnParoleFrame, text='行為人是否於緩刑中或假釋中再犯(否/是):\t\t\t\t', font=('Helvetica', 12),anchor=ttk.W)
 repeatOffenderWhileOnParoleLabel.pack(side='left', fill=ttk.X, expand=True)
 
 # RepeatOffenderWhileOnParoleSelectionRadioButtons
