@@ -7,7 +7,7 @@ data = pd.read_csv('公然侮辱罪_地方法院判決.csv')
 # Convert the data to a dataframe
 df = pd.DataFrame(data)
 
-# convert punishment to the same unit(NTD) ; 1 day = 1000 NTD
+# Convert punishment to the same unit(NTD) ; 1 day = 1000 NTD
 def convert_punishment_to_NTD(punisment):
     if '月' in punisment:
         return int(punisment.replace('有期徒刑','').replace('月',''))*1000*30
@@ -19,11 +19,11 @@ def convert_punishment_to_NTD(punisment):
         return 0
     else:
         return 0
-    
-# convert punishment to NTD
+
+# Convert punishment to NTD
 df['罰金'] = df['處罰方式'].apply(convert_punishment_to_NTD)
 
-# convert other variables to numerical data
+# Convert other variables to numerical data
 df['加重事由-累犯'] = df['加重事由-累犯'].map({'無': 0, '有': 1})
 df['減輕事由'] = df['減輕事由'].map({'無': 0, '有': 1})
 df['行為人是否於緩刑中或假釋中再犯'] = df['行為人是否於緩刑中或假釋中再犯'].map({'否': 0, '是': 1})
@@ -32,7 +32,7 @@ df['行為人有「公然侮辱」外之任何前案紀錄？'] = df['行為人�
 df['是否坦承'] = df['是否坦承'].map({'否認': 0, '坦承': 2, '未敘明': 2, '先否認後坦承': 1})
 df['犯後態度'] = df['犯後態度'].map({'良好': 3,'尚有悔意': 2, '尚可': 1, '未敘明': 0, '不佳': -1, '無悔意': -2})
 
-# initialize spacy
+# Initialize spacy
 nlp = spacy.load('zh_core_web_sm')
 
 def extract_insult_features(text):
