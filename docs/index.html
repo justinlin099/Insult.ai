@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Insult.AI - 靜態雲端版</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <header class="hero">
+        <p class="eyebrow">Insult.AI</p>
+        <h1>AI 公然侮辱刑度通靈系統</h1>
+      </header>
+
+      <form id="predict-form" class="form-grid">
+        <div class="field field-full">
+          <label for="insult_text">請輸入侮辱字詞，字詞請用、分隔，使用「」包住字詞</label>
+          <input id="insult_text" name="insult_text" type="text" placeholder="例如：「白痴」、「王八蛋」">
+        </div>
+
+        <div class="field toggle-field">
+          <label for="repeat_offender">加重事由-累犯</label>
+          <div class="toggle-wrap">
+            <span class="toggle-state" id="repeat_offender_state">無</span>
+            <label class="switch" aria-label="加重事由-累犯">
+              <input id="repeat_offender" type="checkbox">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field toggle-field">
+          <label for="mitigating_factor">減輕事由</label>
+          <div class="toggle-wrap">
+            <span class="toggle-state" id="mitigating_factor_state">無</span>
+            <label class="switch" aria-label="減輕事由">
+              <input id="mitigating_factor" type="checkbox">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field toggle-field">
+          <label for="repeat_offender_while_on_parole">行為人是否於緩刑中或假釋中再犯</label>
+          <div class="toggle-wrap">
+            <span class="toggle-state" id="repeat_offender_while_on_parole_state">否</span>
+            <label class="switch" aria-label="行為人是否於緩刑中或假釋中再犯">
+              <input id="repeat_offender_while_on_parole" type="checkbox">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field toggle-field">
+          <label for="repeat_offender_record">行為人有無「公然侮辱」之前案紀錄</label>
+          <div class="toggle-wrap">
+            <span class="toggle-state" id="repeat_offender_record_state">無</span>
+            <label class="switch" aria-label="行為人有無公然侮辱之前案紀錄">
+              <input id="repeat_offender_record" type="checkbox">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field toggle-field">
+          <label for="other_record">行為人有「公然侮辱」外之任何前案紀錄？</label>
+          <div class="toggle-wrap">
+            <span class="toggle-state" id="other_record_state">無</span>
+            <label class="switch" aria-label="行為人有公然侮辱外之前案紀錄">
+              <input id="other_record" type="checkbox">
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field slider-field field-full">
+          <label for="confession">是否坦承</label>
+          <input id="confession" type="range" min="0" max="3" step="1" value="0">
+          <div class="slider-ticks slider-ticks-4" aria-hidden="true">
+            <span>否認</span>
+            <span>先否認後坦承</span>
+            <span>坦承</span>
+            <span>未敘明</span>
+          </div>
+          <p class="slider-value" id="confession_value">否認</p>
+        </div>
+
+        <div class="field slider-field field-full">
+          <label for="attitude">犯後態度</label>
+          <input id="attitude" type="range" min="0" max="5" step="1" value="5">
+          <div class="slider-ticks slider-ticks-6" aria-hidden="true">
+            <span>無悔意</span>
+            <span>不佳</span>
+            <span>未敘明</span>
+            <span>尚可</span>
+            <span>尚有悔意</span>
+            <span>良好</span>
+          </div>
+          <p class="slider-value" id="attitude_value">良好</p>
+        </div>
+
+        <div class="toolbar field-full">
+          <button type="submit" id="predict-btn">開始預測</button>
+          <p class="status" id="status">模型載入中...</p>
+        </div>
+      </form>
+
+      <section class="result-box">
+        <p class="result-label">預測罰金</p>
+        <p class="result-value" id="result">0 元</p>
+      </section>
+
+      <footer class="footnote">
+        此工具為研究與示範用途，非法律意見或裁判結果保證。
+        <div class="footnote-actions">
+          <a class="github-btn" href="https://github.com/justinlin099/Insult.ai" target="_blank" rel="noopener noreferrer">GitHub Source Code</a>
+        </div>
+        <p class="byline">Made with ❤️ by justinlin099</p>
+      </footer>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

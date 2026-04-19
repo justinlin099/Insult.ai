@@ -114,11 +114,16 @@ celerybeat.pid
 # Environments
 .env
 .venv
+Lib/
+Scripts/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Local editor settings
+.vscode/
 
 # Spyder project settings
 .spyderproject

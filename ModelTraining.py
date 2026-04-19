@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 from sklearn.linear_model import SGDRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor, VotingRegressor
@@ -5,6 +6,7 @@ from sklearn.metrics import mean_absolute_error
 from DataPreprocessing import X, y, extract_insult_features
 import pandas as pd
 import joblib
+import numpy as np
 
 
 # vectorize the text data
@@ -26,7 +28,7 @@ X = pd.concat([X, Xs_df], axis=1)
 X.columns = X.columns.astype(str)
 
 # Split the data into training and validation data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05, random_state=20)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=20)
 
 # Initialize the model
 model = RandomForestRegressor(n_estimators=100, random_state=20)
@@ -36,6 +38,28 @@ model.fit(X_train, y_train)
 
 # Predict the data
 y_pred = model.predict(X_test)
+
+from pylab import mpl
+
+mpl.rcParams['font.sans-serif'] = ['Microsoft JhengHei']  # 指定預設字型: 微軟正黑體
+
+y = model.feature_importances_
+#plot
+fig, ax = plt.subplots() 
+width = 0.4 # the width of the bars 
+ind = np.arange(len(y)) # the x locations for the groups
+ax.barh(ind, y, width, color='green')
+ax.set_yticks(ind+width/10)
+ax.set_yticklabels(X.columns, minor=False)
+
+plt.title('Feature importance in RandomForest Classifier')
+plt.xlabel('Relative importance')
+plt.ylabel('feature') 
+plt.figure(figsize=(5,5))
+fig.set_size_inches(10, 10, forward=True)
+
+plt.show()
+
 
 # Calculate the mean absolute error
 mae = mean_absolute_error(y_test, y_pred)

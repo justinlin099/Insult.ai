@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 公然侮辱刑度通靈系統</title>
+  <style>
+    :root {
+      --bg: #f7f4ee;
+      --card: #fffdf9;
+      --text: #222222;
+      --muted: #68645b;
+      --brand: #b9502f;
+      --brand-2: #e08b4f;
+      --line: #ded5c8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 10%, #f2d5a9 0, transparent 38%),
+        radial-gradient(circle at 80% 80%, #e8c7b5 0, transparent 42%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 12px 32px rgba(100, 66, 34, 0.12);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 1.25rem 1.5rem;
+      background: linear-gradient(120deg, var(--brand), var(--brand-2));
+      color: #fff;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .header p {
+      margin: 0.35rem 0 0;
+      opacity: 0.9;
+    }
+
+    form {
+      padding: 1.25rem 1.5rem 1.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-weight: 700;
+      color: #4a4138;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.65rem 0.75rem;
+      font-size: 1rem;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+      outline: 2px solid #f0b98f;
+      outline-offset: 1px;
+      border-color: #d68b62;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      background: #25211f;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.65rem 1.1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #000;
+    }
+
+    .result {
+      font-weight: 800;
+      color: #7d2f19;
+      font-size: 1.2rem;
+    }
+
+    .tip {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .header h1 { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="card">
+      <header class="header">
+        <h1>AI 公然侮辱刑度通靈系統</h1>
+        <p>Insult.AI - Web 版</p>
+      </header>
+
+      <form method="post">
+        <div class="field">
+          <label for="insult_text">請輸入侮辱字詞，字詞請用、分隔，使用「」包住字詞</label>
+          <input id="insult_text" name="insult_text" type="text" value="{{ form.insult_text }}" placeholder="例如：「白痴」、「王八蛋」">
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="repeat_offender">加重事由-累犯</label>
+            <select id="repeat_offender" name="repeat_offender">
+              <option value="無" {% if form.repeat_offender == '無' %}selected{% endif %}>無</option>
+              <option value="有" {% if form.repeat_offender == '有' %}selected{% endif %}>有</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="mitigating_factor">減輕事由</label>
+            <select id="mitigating_factor" name="mitigating_factor">
+              <option value="無" {% if form.mitigating_factor == '無' %}selected{% endif %}>無</option>
+              <option value="有" {% if form.mitigating_factor == '有' %}selected{% endif %}>有</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="repeat_offender_while_on_parole">行為人是否於緩刑中或假釋中再犯</label>
+            <select id="repeat_offender_while_on_parole" name="repeat_offender_while_on_parole">
+              <option value="否" {% if form.repeat_offender_while_on_parole == '否' %}selected{% endif %}>否</option>
+              <option value="是" {% if form.repeat_offender_while_on_parole == '是' %}selected{% endif %}>是</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="repeat_offender_record">行為人有無「公然侮辱」之前案紀錄</label>
+            <select id="repeat_offender_record" name="repeat_offender_record">
+              <option value="無" {% if form.repeat_offender_record == '無' %}selected{% endif %}>無</option>
+              <option value="有" {% if form.repeat_offender_record == '有' %}selected{% endif %}>有</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="other_record">行為人有「公然侮辱」外之任何前案紀錄？</label>
+            <select id="other_record" name="other_record">
+              <option value="無" {% if form.other_record == '無' %}selected{% endif %}>無</option>
+              <option value="有" {% if form.other_record == '有' %}selected{% endif %}>有</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="confession">是否坦承</label>
+            <select id="confession" name="confession">
+              <option value="否認" {% if form.confession == '否認' %}selected{% endif %}>否認</option>
+              <option value="坦承" {% if form.confession == '坦承' %}selected{% endif %}>坦承</option>
+              <option value="未敘明" {% if form.confession == '未敘明' %}selected{% endif %}>未敘明</option>
+              <option value="先否認後坦承" {% if form.confession == '先否認後坦承' %}selected{% endif %}>先否認後坦承</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="attitude">犯後態度</label>
+            <select id="attitude" name="attitude">
+              <option value="良好" {% if form.attitude == '良好' %}selected{% endif %}>良好</option>
+              <option value="尚有悔意" {% if form.attitude == '尚有悔意' %}selected{% endif %}>尚有悔意</option>
+              <option value="尚可" {% if form.attitude == '尚可' %}selected{% endif %}>尚可</option>
+              <option value="未敘明" {% if form.attitude == '未敘明' %}selected{% endif %}>未敘明</option>
+              <option value="不佳" {% if form.attitude == '不佳' %}selected{% endif %}>不佳</option>
+              <option value="無悔意" {% if form.attitude == '無悔意' %}selected{% endif %}>無悔意</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit">開始預測</button>
+          <span class="result">預測罰金: {{ result }}</span>
+        </div>
+
+        <p class="tip">提醒: 此工具為研究與示範用途，非法律意見或裁判結果保證。</p>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
