@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Insult.AI - 靜態雲端版</title>
+  <title>Insult.ai - 公然侮辱刑度通靈系統</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -17,7 +17,17 @@
       <form id="predict-form" class="form-grid">
         <div class="field field-full">
           <label for="insult_text">請輸入侮辱字詞，字詞請用、分隔，使用「」包住字詞</label>
-          <input id="insult_text" name="insult_text" type="text" placeholder="例如：「白痴」、「王八蛋」">
+          <div class="input-shell">
+            <input id="insult_text" name="insult_text" type="text" placeholder="例如：「白痴」、「王八蛋」" autocomplete="off">
+            <button type="button" id="insult_clear" class="input-clear" aria-label="清除輸入內容" hidden>×</button>
+          </div>
+          <div class="shortcut-panel">
+            <div class="shortcut-panel-head">
+              <span>常用 / 有趣字詞</span>
+              <span class="shortcut-panel-note">點一下就直接加入輸入框</span>
+            </div>
+            <div id="insult_shortcuts" class="shortcut-row" aria-label="常用侮辱字詞快捷按鈕"></div>
+          </div>
         </div>
 
         <div class="field toggle-field">
@@ -119,6 +129,112 @@
         </div>
         <p class="byline">Made with ❤️ by justinlin099</p>
       </footer>
+    </section>
+
+    <section class="card info-card">
+      <header class="info-hero">
+        <h2>這個專案怎麼做的</h2>
+        <p>網路上有一張「罵人價目表」在流傳，但它其實並不準確。我們收集 100 筆真實公然侮辱判決，訓練隨機森林 AI 來預測更貼近現實的罰金。</p>
+      </header>
+
+      <div class="info-body">
+        <div class="info-grid">
+          <div class="info-block">
+            <h3>問題來源</h3>
+            <p>網路上的「罵人價目表」將侮辱字詞簡化對應固定罰金，但實際判決會考慮累犯、坦承態度、犯後悔意等多個案情因素。</p>
+          </div>
+          <div class="info-block">
+            <h3>資料來源</h3>
+            <p>從臺灣地方法院蒐集 100 筆公然侮辱案件判決，逐筆整理：侮辱字詞、案情因素（累犯、態度等）、最終罰金或拘役天數。</p>
+          </div>
+          <div class="info-block">
+            <h3>模型方法</h3>
+            <p>資料前處理後用「隨機森林」演算法訓練，讓多個決策樹各自學習判決規律，最後投票決定罰金預測結果。</p>
+          </div>
+        </div>
+
+        <div class="info-visuals">
+          <figure class="info-figure">
+            <div class="figure-visual">
+              <div class="flow-chart">
+                <div class="flow-step">
+                  <div class="flow-box">100 筆判決</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-box">數值化</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-box">隨機森林</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                  <div class="flow-box flow-result">罰金</div>
+                </div>
+              </div>
+            </div>
+            <p class="flow-note">各個決策樹投票決定結果</p>
+            <figcaption>100 筆判決 → 轉成數字特徵 → 訓練多棵決策樹 → 預測罰金</figcaption>
+          </figure>
+
+          <figure class="info-figure">
+            <div class="figure-visual">
+              <div class="limit-box">
+                <div class="limit-title">100 筆資料限制</div>
+                <div class="limit-item limit-good">✓ 常見字詞預測準確</div>
+                <div class="limit-item limit-bad">✗ 未見過的情況易失準</div>
+              </div>
+            </div>
+            <figcaption>資料量 100 筆雖有限，但常見字詞仍可大致準確</figcaption>
+          </figure>
+
+          <figure class="info-figure">
+            <div class="figure-visual">
+              <div class="judge-comparison">
+                <div class="judge-card judge-a">
+                  <div class="judge-case">同樣的罪</div>
+                  <div class="judge-fine">5 千元</div>
+                  <div class="judge-name">法官 A</div>
+                </div>
+                <div class="judge-card judge-b">
+                  <div class="judge-case">同樣的罪</div>
+                  <div class="judge-fine">2 萬元</div>
+                  <div class="judge-name">法官 B</div>
+                </div>
+                <div class="judge-card judge-unknown">
+                  <div class="judge-case judge-placeholder" aria-hidden="true">同樣的罪</div>
+                  <div class="judge-question">?</div>
+                  <div class="judge-fine judge-placeholder" aria-hidden="true">0 元</div>
+                  <div class="judge-name">模型</div>
+                </div>
+              </div>
+            </div>
+            <figcaption>法官判決本身不一致，模型無法完全複製</figcaption>
+          </figure>
+        </div>
+
+        <div class="info-notes">
+          <h3>🔍 實作細節</h3>
+          <ul class="info-list">
+            <li><strong>特徵工程</strong>：把判決文書轉成數值（累犯 0/1、拘役天數×1000 轉罰金、用 spaCy 分詞侮辱字詞）</li>
+            <li><strong>演算法</strong>：隨機森林是「三個臭皮匠勝過一個諸葛亮」的概念，多棵決策樹投票</li>
+            <li><strong>誤差</strong>：模型平均絕對誤差 7240 元左右，仍需改進</li>
+          </ul>
+          <h3>⚠️ 目前的限制</h3>
+          <ul class="info-list">
+            <li><strong>資料量</strong>：只有 100 筆判決，無法覆蓋所有情況</li>
+            <li><strong>未知情況</strong>：遇到模型未見過的字詞或案情組合時，易退化成「用字數決定罰金」</li>
+            <li><strong>法官不一致</strong>：同樣的罪名，法官間判決差異大，這也是民眾感覺司法不公的原因之一</li>
+          </ul>
+          <h3>✨ 未來改進</h3>
+          <ul class="info-list">
+            <li>語境分析：考慮侮辱字詞使用背景與意圖</li>
+            <li>更多資料：爬蟲取得更多判決書進行訓練</li>
+            <li>完整判決書：不只用特定欄位，而是全文分析</li>
+          </ul>
+        </div>
+      </div>
     </section>
   </main>
 

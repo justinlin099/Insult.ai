@@ -16,6 +16,23 @@ const ATTITUDE_MAP = {
 
 const CONFESSION_OPTIONS = ["否認", "先否認後坦承", "坦承", "未敘明"];
 const ATTITUDE_OPTIONS = ["無悔意", "不佳", "未敘明", "尚可", "尚有悔意", "良好"];
+const SHORTCUT_CANDIDATES = [
+  "白癡",
+  "垃圾",
+  "畜生",
+  "敗類",
+  "瘋婆",
+  "婊子",
+  "渣男",
+  "肖查某",
+  "狗眼看人低",
+  "神經病",
+  "有病",
+  "廢物",
+  "臭卒仔",
+  "低能",
+  "智障",
+];
 
 let webModel = null;
 
@@ -23,6 +40,9 @@ const form = document.getElementById("predict-form");
 const resultEl = document.getElementById("result");
 const statusEl = document.getElementById("status");
 const predictBtn = document.getElementById("predict-btn");
+const insultInput = document.getElementById("insult_text");
+const insultClearBtn = document.getElementById("insult_clear");
+const insultShortcuts = document.getElementById("insult_shortcuts");
 
 function normalizeToken(token) {
   return token.trim();
@@ -94,7 +114,64 @@ function setupSlider(inputId, valueId, options) {
   update();
 }
 
+function setupInsultInputHelpers() {
+  const updateClearButton = () => {
+    insultClearBtn.hidden = insultInput.value.trim().length === 0;
+  };
+
+  const clearInput = () => {
+    insultInput.value = "";
+    insultInput.dispatchEvent(new Event("input", { bubbles: true }));
+    insultInput.focus();
+  };
+
+  insultInput.addEventListener("input", updateClearButton);
+  insultClearBtn.addEventListener("click", clearInput);
+  updateClearButton();
+}
+
+function appendInsultToken(token) {
+  const formattedToken = `「${token}」`;
+  const currentText = insultInput.value.trim();
+
+  if (!currentText) {
+    insultInput.value = formattedToken;
+  } else {
+    const existingTokens = tokenizeInput(currentText);
+    if (existingTokens.includes(token)) {
+      insultInput.focus();
+      return;
+    }
+
+    const separator = /[、，,]$/.test(currentText) ? "" : "、";
+    insultInput.value = `${currentText}${separator}${formattedToken}`;
+  }
+
+  insultInput.dispatchEvent(new Event("input", { bubbles: true }));
+  insultInput.focus();
+}
+
+function renderShortcutButtons(vocabulary) {
+  if (!insultShortcuts) {
+    return;
+  }
+
+  const availableTokens = SHORTCUT_CANDIDATES.filter((token) => vocabulary[token] !== undefined);
+
+  insultShortcuts.innerHTML = "";
+
+  for (const token of availableTokens) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "shortcut-chip";
+    button.textContent = token;
+    button.addEventListener("click", () => appendInsultToken(token));
+    insultShortcuts.appendChild(button);
+  }
+}
+
 function initializeControls() {
+  setupInsultInputHelpers();
   setupToggle("repeat_offender", "repeat_offender_state", "有", "無");
   setupToggle("mitigating_factor", "mitigating_factor_state", "有", "無");
   setupToggle("repeat_offender_while_on_parole", "repeat_offender_while_on_parole_state", "是", "否");
@@ -185,7 +262,8 @@ async function loadModel() {
     }
 
     webModel = await response.json();
-    setStatus("模型已就緒，可以開始預測");
+    renderShortcutButtons(webModel.vectorizer.vocabulary);
+    setStatus("");
     predictBtn.disabled = false;
   } catch (error) {
     console.error(error);
